@@ -14,24 +14,25 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.common.commands.drivetraincommands.DrivetrainCommand;
 import org.firstinspires.ftc.teamcode.common.commands.intakecommands.StartIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commands.intakecommands.StopIntakeCommand;
+import org.firstinspires.ftc.teamcode.common.commands.liftcommands.LiftCommand;
 import org.firstinspires.ftc.teamcode.common.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.common.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.common.subsystems.LiftSubsystem;
 
 import java.util.List;
 
-@TeleOp(name = "avionDeHartie")
+@TeleOp(name = "\uD83D\uDE22")
 public class Teleop extends CommandOpMode {
 
     Motor liftMotor;
     TriggerReader liftTriggerReader;
 
     @Override
-    public void initialize(){
-    List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
-    for(LynxModule hub : allHubs){
-        hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
-    }
+    public void initialize() {
+        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+        for (LynxModule hub : allHubs) {
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
         MotorEx frontLeft = new MotorEx(hardwareMap, "MotorFrontLeft", Motor.GoBILDA.RPM_435);
         MotorEx frontRight = new MotorEx(hardwareMap, "MotorFrontRight", Motor.GoBILDA.RPM_435);
         MotorEx backLeft = new MotorEx(hardwareMap, "MotorBackLeft", Motor.GoBILDA.RPM_435);
@@ -51,7 +52,9 @@ public class Teleop extends CommandOpMode {
         GamepadEx driverOp = new GamepadEx(gamepad1);
         GamepadEx toolsOp = new GamepadEx(gamepad2);
         liftTriggerReader = new TriggerReader(toolsOp, GamepadKeys.Trigger.RIGHT_TRIGGER);
-
+        LiftCommand liftCommand = new LiftCommand(lift,
+                () -> toolsOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
+        lift.setDefaultCommand(liftCommand);
         Button intakeButton = new GamepadButton(toolsOp, GamepadKeys.Button.A);
 
         intakeButton.toggleWhenPressed(startIntake, stopIntake);

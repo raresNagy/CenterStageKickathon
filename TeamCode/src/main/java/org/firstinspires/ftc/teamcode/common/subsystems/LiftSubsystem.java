@@ -31,6 +31,10 @@ public class LiftSubsystem extends SubsystemBase {
         return encoderTicksToCm(ticks) *  Math.sin(ANGLE);
     }
 
+    public void setPower(double power){
+        motorLift.set(power);
+    }
+
 
 
 
